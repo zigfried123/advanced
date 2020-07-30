@@ -12,6 +12,11 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'homeUrl' => '/',
+    'modules' => [
+        'api' => [
+            'class' => 'frontend\modules\api\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'baseUrl' => '',
@@ -45,11 +50,11 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
+            'rules' => array_merge([
                 '' => 'site/index',
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'service'],
-            ],
+            ], require('service-routes.php'))
         ],
 
     ],

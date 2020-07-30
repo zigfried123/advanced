@@ -54,7 +54,7 @@ return [
                 '' => 'site/index',
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'service'],
-            ], require('service-routes.php'))
+            ], require_once('service-routes.php'))
         ],
 
     ],

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\behaviors\SoftDeleteBehavior;
 use Yii;
 use yii\db\ActiveRecord;
 

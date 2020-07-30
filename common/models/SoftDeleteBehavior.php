@@ -27,9 +27,10 @@ class SoftDeleteBehavior extends Behavior
      * @return bool
      * @throws Exception
      */
-    public function softDelete(ActiveRecord $row): bool
+    public function softDelete(): bool
     {
-        if ($this->isDeleted($row)) {
+
+        if ($this->isDeleted()) {
             throw new Exception('Row deleted already');
         }
 
@@ -37,7 +38,7 @@ class SoftDeleteBehavior extends Behavior
 
         $command = $owner::getDb()->createCommand();
 
-        $command->update($this->table, [$this->param => self::DELETED], ['id' => $row->id]);
+        $command->update($this->table, [$this->param => self::DELETED], ['id' => $owner->id]);
 
         if (!$command->execute()) {
             throw new Exception('Row not deleted');
@@ -47,12 +48,11 @@ class SoftDeleteBehavior extends Behavior
     }
 
     /**
-     * @param ActiveRecord $row
      * @return bool
      */
-    public function isDeleted(ActiveRecord $row): bool
+    public function isDeleted(): bool
     {
-        return $row->{$this->param};
+        return $this->owner->{$this->param};
     }
 
     /**
@@ -60,9 +60,9 @@ class SoftDeleteBehavior extends Behavior
      * @return bool
      * @throws Exception
      */
-    public function restore(ActiveRecord $row): bool
+    public function restore(): bool
     {
-        if (!$this->isDeleted($row)) {
+        if (!$this->isDeleted()) {
             throw new Exception('Row restored already');
         }
 
@@ -70,7 +70,7 @@ class SoftDeleteBehavior extends Behavior
 
         $command = $owner::getDb()->createCommand();
 
-        $command->update($this->table, [$this->param => self::NOT_DELETED], ['id' => $row->id]);
+        $command->update($this->table, [$this->param => self::NOT_DELETED], ['id' => $owner->id]);
 
         if (!$command->execute()) {
             throw new Exception('Row not restored');
